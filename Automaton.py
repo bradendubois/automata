@@ -4,7 +4,7 @@ import Exceptions
 
 class Automaton(abc.ABC):
 
-    def __init__(self, q: set, sigma: set, delta_mapping: dict, q0: str or dict, f: set):
+    def __init__(self, q: set, sigma: set, delta_mapping: dict, q0: str or set, f: set):
         """
         The basic definition of a finite automaton, M
         :param q: A set of states in M
@@ -20,8 +20,8 @@ class Automaton(abc.ABC):
                 raise Exceptions.InvalidSubset()
 
         # Enforce the initial state to be in Q
-        if q0 not in q:
-            raise Exceptions.InvalidSubset()
+        #if q0 not in q:
+        #    raise Exceptions.InvalidSubset()
 
         self.q = q
         self.sigma = sigma
@@ -29,16 +29,14 @@ class Automaton(abc.ABC):
         self.q0 = q0
         self.f = f
 
+    @abc.abstractmethod
     def accepts(self, w: str):
         """
         Determine if a word w is accepted in a given automaton
         :param w: The word read to read
         :return: True if the word is accepted, False otherwise
         """
-        try:
-            return self.delta(w) in self.f
-        except KeyError:
-            return False
+        pass
 
     @abc.abstractmethod
     def delta(self, w: str):
