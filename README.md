@@ -5,8 +5,8 @@
 ## Project Scope
 
 - Deterministic Finite Automata - *Added*
-- Nondeterministic Finite Automata - *Added*
-- Epsilon-transition Nondeterministic Finite Automata - *Added* 
+- Nondeterministic Finite Automata - *Planned*
+- Epsilon-transition Nondeterministic Finite Automata - *Planned* 
 
 A goal is to implement everything as close to their formal definitions as possible.
 

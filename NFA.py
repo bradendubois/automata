@@ -26,7 +26,7 @@ class NonDeterministicFiniteAutomaton(Automaton):
         :return: True if the word is accepted, False otherwise
         """
         try:
-            return len(self.delta(w) & self.f) > 0
+            return self.delta(w) & self.f
         except KeyError:
             return False
 

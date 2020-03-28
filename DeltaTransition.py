@@ -28,7 +28,7 @@ class Deterministic(DeltaTransition):
     def __init__(self, delta_mapping: dict):
         super().__init__(delta_mapping)
 
-    def delta_transition(self, q0: str, w):
+    def delta_transition(self, q0: str, w: str):
         if w == "":
             return q0
         else:
@@ -52,16 +52,16 @@ class NonDeterministic(DeltaTransition):
                     sub_states = self.delta_mapping[(state, w[-1])]
                     for i in sub_states:
                         return_set.add(i)
-            return return_set
+            print(return_set)
+            return tuple(return_set)
 
     def result(self, q0: set, a: str):
-        return_set = set()
+        return_tuple = set()
         for s in q0:
             if (s, a) in self.delta_mapping:
-                result = self.delta_mapping[(s, a)]
-                for state in result:
-                    return_set.add(state)
-        return return_set
+                return_tuple.add(self.delta_mapping[(s, a)])
+        return tuple(return_tuple)
+        #return tuple([self.delta_mapping[(s, a)] for s in q0 if (s, a) in self.delta_mapping])
 
 
 class EpsilonNonDeterministic(NonDeterministic):

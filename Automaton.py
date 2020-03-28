@@ -4,7 +4,7 @@ import Exceptions
 
 class Automaton(abc.ABC):
 
-    def __init__(self, q: set, sigma: set, delta_mapping: dict, q0: str or set, f: set):
+    def __init__(self, q: set, sigma: set, delta_mapping: dict, q0: set or str, f: set):
         """
         The basic definition of a finite automaton, M
         :param q: A set of states in M
@@ -14,14 +14,18 @@ class Automaton(abc.ABC):
         :param f: The final states of M: must be a subset of Q
         """
 
+        # TODO - Handle subset enforcing while supporting q0 as a set OR string
+        """
         # Enforce F as a subset of Q
         for s in f:
             if s not in q:
                 raise Exceptions.InvalidSubset()
 
         # Enforce the initial state to be in Q
-        #if q0 not in q:
-        #    raise Exceptions.InvalidSubset()
+        for s in q0:
+            if s not in q:
+                raise Exceptions.InvalidSubset()
+        """
 
         self.q = q
         self.sigma = sigma
