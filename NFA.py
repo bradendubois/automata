@@ -1,39 +1,30 @@
-from Automaton import Automaton
-from DeltaTransition import NonDeterministic
 
+class NondeterministicFiniteAutomaton:
 
-class NonDeterministicFiniteAutomaton(Automaton):
-    """
-    A basic Non-Deterministic Finite Automaton.
-    """
-
-    def __init__(self, q: set, sigma: set, delta_mapping: dict, q0: set, f: set):
-        """
-        Constructor for a Non-Deterministic Finite Automaton, M.
-        :param q: The set of states in M.
-        :param sigma: The alphabet of M.
-        :param delta_mapping: The transition function: a mapping of (x in q, a in sigma) to q.
-        :param q0: The initial state.
-        :param f: The set of final/accepting states.
-        """
-        super().__init__(q, sigma, delta_mapping, q0, f)
-        self.delta_function = NonDeterministic(self.delta_mapping)
+    def __init__(self, q: set, sigma: set, delta: dict, q0: str, f: set):
+        
+        # Store all properties of our Automaton
+        self.q = q
+        self.sigma = sigma
+        self.delta = delta
+        self.q0 = q0
+        self.f = f
+        
+        # Enforce definitions
+        assert q0 in q, "q0 is not in Q!"
+        assert f.issubset(q), "F is not a subset of Q!"
+        
+    def _delta(self, q: set, w: str) -> set:
+        
+        if w == "":
+            return q
+        else:
+            return set().union(*[self.delta[(s, w[-1])] for s in self._delta(q, w[:-1]) if (s, w[-1]) in self.delta])
 
     def accepts(self, w: str):
-        """
-        Determine if a word w is accepted in a given automaton
-        :param w: The word read to read
-        :return: True if the word is accepted, False otherwise
-        """
         try:
-            return self.delta(w) & self.f
+            result = self._delta({self.q0}, w)
+            print("delta({}, {}): {}".format(self.q0, w, result))
+            return result & self.f != set()
         except KeyError:
             return False
-
-    def delta(self, w: str):
-        """
-        Determine the state reached in M by the given word.
-        :param w: A word over "sigma".
-        :return: A set of states in Q.
-        """
-        return self.delta_function.delta_transition(self.q0, w)

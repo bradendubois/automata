@@ -49,5 +49,12 @@ else:
 
 automaton = automaton_type(**loaded["language"])
 
+while True:
 
-print(automaton.accepts("00001110101"))
+    word = input("Enter a word: ")
+    print("Word accepted:", automaton.accepts(word))
+
+    print()
+    if input("Exit? (Y/N): ").lower().strip() in ["y", "yes"]:
+        break
+    print()

@@ -24,6 +24,8 @@ class DeterministicFiniteAutomaton:
     
     def accepts(self, w: str):
         try:
-            return self._delta(self.q0, w) in self.f
+            result = self._delta(self.q0, w)
+            print("delta({}, {}): {}".format(self.q0, w, result))
+            return result in self.f
         except KeyError:
             return False

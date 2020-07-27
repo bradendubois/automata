@@ -25,8 +25,13 @@ def load_yaml(filename: str):
 
     l["language"]["delta"] = delta
     l["language"]["q0"] = l_pre["q0"]
+    
     l["language"]["f"] = set(l_pre["F"])
 
     l["automata"] = preprocessed["automata"]
+
+    
+    # if l["automata"] in ["NFA", "eNFA"]:
+    #     l["language"]["q0"] = set([l["language"]["q0"]])
 
     return l
