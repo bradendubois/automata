@@ -58,13 +58,21 @@ else:
 
 automaton = automaton_type(**loaded_file["language"])
 
-while True:
+# Words already specified
+if len(argv) > 2:
+    for word in argv[2:]:
+        print(word + " accepted:", automaton.accepts(word), "\n")
 
-    word = input("Enter a word: ")
-    print("Word accepted:", automaton.accepts(word))
+# Begin a loop to read in words
+else:
+    
+    while True:
 
-    # Aesthetic spacing, ask to continue/exit
-    print()
-    if input("Exit? (Y/N): ").lower().strip() in ["y", "yes"]:
-        break
-    print()
+        word = input("Enter a word: ")
+        print("Word accepted:", automaton.accepts(word))
+
+        # Aesthetic spacing, ask to continue/exit
+        print()
+        if input("Exit? (Y/N): ").lower().strip() in ["y", "yes"]:
+            break
+        print()
