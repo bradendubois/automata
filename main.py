@@ -1,10 +1,11 @@
-import yaml
-from DFA import DeterministicFiniteAutomaton as DFA
-from NFA import NondeterministicFiniteAutomaton as NFA
-from eNFA import EpsilonNondeterministicFiniteAutomaton as eNFA
-from file_loader import load_yaml
 from sys import argv
 from os import listdir, path
+
+from automata.DFA import DeterministicFiniteAutomaton as DFA
+from automata.NFA import NondeterministicFiniteAutomaton as NFA
+from automata.eNFA import EpsilonNondeterministicFiniteAutomaton as eNFA
+
+from util.file_loader import load_and_parse
 
 DEFAULT_LANGUAGE_LOCATION = "languages"
 
@@ -32,11 +33,11 @@ else:
     exit(-1)
 
 # Load the yml file
-loaded = load_yaml(filename)
+loaded_file = load_and_parse(filename)
 
 # Ensure a valid automata type is specified
 try:
-    if loaded["automata"] not in ["DFA", "NFA", "eNFA"]:
+    if loaded_file["automata"] not in ["DFA", "NFA", "eNFA"]:
         print("Invalid automata type specified.")
         exit(-1)
 
@@ -45,7 +46,7 @@ except KeyError:
     exit(-1)    
 
 # Get the automaton type
-automata = loaded["automata"]
+automata = loaded_file["automata"]
 
 # Load the corresponding automaton
 if automata == "DFA":
@@ -55,13 +56,14 @@ elif automata == "NFA":
 else:
     automaton_type = eNFA
 
-automaton = automaton_type(**loaded["language"])
+automaton = automaton_type(**loaded_file["language"])
 
 while True:
 
     word = input("Enter a word: ")
     print("Word accepted:", automaton.accepts(word))
 
+    # Aesthetic spacing, ask to continue/exit
     print()
     if input("Exit? (Y/N): ").lower().strip() in ["y", "yes"]:
         break
