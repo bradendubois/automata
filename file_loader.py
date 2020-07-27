@@ -21,7 +21,7 @@ def load_yaml(filename: str):
     delta = dict()
     delta_pre = dict(ChainMap(*l_pre["Delta"]))
     for key in delta_pre:
-        delta[tuple(i.strip() for i in key.split(","))] = delta_pre[key]
+        delta[tuple(i.strip() for i in key.split(","))] = set(delta_pre[key])
 
     l["language"]["delta"] = delta
     l["language"]["q0"] = l_pre["q0"]

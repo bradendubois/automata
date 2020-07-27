@@ -1,6 +1,7 @@
 import yaml
 from DFA import DeterministicFiniteAutomaton as DFA
 from NFA import NondeterministicFiniteAutomaton as NFA
+from eNFA import EpsilonNondeterministicFiniteAutomaton as eNFA
 from file_loader import load_yaml
 from sys import argv
 from os import listdir, path
@@ -14,14 +15,21 @@ if len(argv) > 1:
     print("Selecting:", filename)
 
 # Otherwise, get the user to select one
-if path.isdir(DEFAULT_LANGUAGE_LOCATION):
+elif path.isdir(DEFAULT_LANGUAGE_LOCATION):
     files = sorted([f for f in listdir(DEFAULT_LANGUAGE_LOCATION) if f.endswith(".yml")])
     selection = ""
     while not selection.isdigit() or not 1 <= int(selection) <= len(files):
         for f in range(len(files)):
             print(str(f+1) + ")", files[f])
         selection = input("Selection: ")
+    
     filename = DEFAULT_LANGUAGE_LOCATION + "/" + files[int(selection)-1]
+    print("Selected:", filename, "\n")
+
+# No file specified, no default directory to check
+else:
+    print("No file provided, nor is the default directory of languages found.")
+    exit(-1)
 
 # Load the yml file
 loaded = load_yaml(filename)
