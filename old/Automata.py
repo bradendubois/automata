@@ -4,16 +4,15 @@ import urwid
 
 class AutomataMenu(urwid.WidgetWrap):
 
-    def __init__(self, tabs=None):
+    def __init__(self):
 
-        if tabs is None:
-            tabs = urwid.LineBox(urwid.Text("Delta Menu"))
+        self._w = urwid.LineBox(urwid.Text("Delta Menu"))
             
-        super().__init__(tabs)
-        self.tabs = tabs
-        self.tabs.set_title("Automata Menu")
-        self.tabs._selectable = True
-        self.tabs._sizing = "flow"
+        super().__init__(self._w)
+        self._w = self._w
+        self._w.set_title("Automata Menu")
+        
+        self._w._sizing = "flow"
         self._sizing = "flow"
     
     def keypress(self, size, key):
@@ -35,6 +34,7 @@ class TransitionPanel(urwid.WidgetWrap):
         
         self.show_text = urwid.Text("False")
 
+
         if w is None:
             w = urwid.LineBox(
                 urwid.Pile([
@@ -50,6 +50,7 @@ class TransitionPanel(urwid.WidgetWrap):
         self._w._selectable = True
         self._sizing = "flow"
 
+
     def keypress(self, size, key):
         if key in ["up", "down", "left", "right"]:
             return key
@@ -61,24 +62,23 @@ class TransitionPanel(urwid.WidgetWrap):
     
     def link_input_area(self, input_area):
         self.input_area = input_area
+
 class InputArea(urwid.WidgetWrap):
 
-    def __init__(self, widgets=None):
+    def __init__(self):
 
         self.edit_box = urwid.Edit("Enter: ")
-        if widgets is None:
-            widgets = urwid.LineBox(   
-                urwid.ListBox(
-                    urwid.SimpleFocusListWalker([
-                        urwid.Text("Box3"),
-                        urwid.Text("Box4"),
-                        self.edit_box
-                ])))
+        self._w = urwid.LineBox(   
+            urwid.ListBox(
+                urwid.SimpleFocusListWalker([
+                    urwid.Text("Box3"),
+                    urwid.Text("Box4"),
+                    self.edit_box
+            ])))
 
-        super().__init__(widgets)
-        self.widgets = widgets
-        self.widgets.set_title("Input Area")
-        self.widgets._selectable = True
+        super().__init__(self._w)
+        self._w.set_title("Input Area")
+        self._w._selectable = True
         self._sizing = "flow"
     
     def keypress(self, size, key):
@@ -89,32 +89,40 @@ class InputArea(urwid.WidgetWrap):
     def selectable(self):
         return True
 
+
+class MainWindowFrame(urwid.WidgetWrap):
+
+    def __init__(self):
+
+        self.automata_menu = AutomataMenu()
+        self.transition_panel = TransitionPanel()
+        self.input_area = InputArea()
+
+        self._w = urwid.Pile([
+            
+            urwid.ListBox(
+                
+                urwid.SimpleFocusListWalker([
+                    self.automata_menu,
+                    self.transition_panel
+                ])
+            ),
+            
+            self.input_area
+        ])
+
+
+        self.transition_panel.link_input_area(self.input_area)
+
+        
+        super().__init__(self._w)
+
+
 def main():
 
     urwid.set_encoding("utf8")
-    
-    automataMenu = AutomataMenu()
-    transitionPanel = TransitionPanel()
 
-    input_area = InputArea()
-
-    transitionPanel.link_input_area(input_area)
-
-
-    mainframe = urwid.Pile([
-
-        urwid.ListBox(
-
-            urwid.SimpleFocusListWalker([
-
-                automataMenu,
-                transitionPanel
-
-            ])
-        ),
-
-        input_area
-    ])
+    mainframe = MainWindowFrame()
 
     def quit(*args, **kwargs):
         raise urwid.ExitMainLoop()
