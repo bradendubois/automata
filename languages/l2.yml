@@ -2,7 +2,7 @@
 
 automata: DFA
 
-language: 
+M: 
     
     Q: 
         - q0

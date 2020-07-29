@@ -3,7 +3,7 @@
 
 automata: eNFA
 
-language:
+M:
     
     Q: 
         - q0

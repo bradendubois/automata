@@ -1,10 +1,24 @@
+#!/usr/bin/env python
+
+##########################################################
+#                                                        #
+#     ____ ___  __/ /_____  ____ ___  ____ _/ /_____ _   #
+#    / __ `/ / / / __/ __ \/ __ `__ \/ __ `/ __/ __ `/   #
+#   / /_/ / /_/ / /_/ /_/ / / / / / / /_/ / /_/ /_/ /    #
+#   \__,_/\__,_/\__/\____/_/ /_/ /_/\__,_/\__/\__,_/     #
+#                                                        #
+##########################################################
+
+# Python libraries
 from sys import argv
 from os import listdir, path
 
+# Different automata
 from automata.DFA import DeterministicFiniteAutomaton as DFA
 from automata.NFA import NondeterministicFiniteAutomaton as NFA
 from automata.eNFA import EpsilonNondeterministicFiniteAutomaton as eNFA
 
+# Parse the YML file into a proper automaton
 from util.file_loader import load_and_parse
 
 DEFAULT_LANGUAGE_LOCATION = "languages"
@@ -20,6 +34,7 @@ elif path.isdir(DEFAULT_LANGUAGE_LOCATION):
     files = sorted([f for f in listdir(DEFAULT_LANGUAGE_LOCATION) if f.endswith(".yml")])
     selection = ""
     while not selection.isdigit() or not 1 <= int(selection) <= len(files):
+        print("Languages found:")
         for f in range(len(files)):
             print(str(f+1) + ")", files[f])
         selection = input("Selection: ")
@@ -56,7 +71,8 @@ elif automata == "NFA":
 else:
     automaton_type = eNFA
 
-automaton = automaton_type(**loaded_file["language"])
+automaton = automaton_type(**loaded_file["M"])
+print(str(automaton))
 
 # Words already specified
 if len(argv) > 2:

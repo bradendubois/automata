@@ -3,7 +3,7 @@
 
 automata: NFA
 
-language:
+M:
     
     Q: 
         - q0

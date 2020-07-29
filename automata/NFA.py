@@ -17,5 +17,5 @@ class NondeterministicFiniteAutomaton(DFA):
             result = self._delta({self.q0}, w)
         except KeyError:
             result = set()
-        print("delta({}, {}): {}".format(self.q0, w, result))
+        print("delta({}, {}): {}".format(self.q0, w if w else '""', result))
         return result & self.f != set()

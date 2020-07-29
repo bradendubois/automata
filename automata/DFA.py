@@ -15,6 +15,18 @@ class DeterministicFiniteAutomaton:
         assert q0 in q, "q0 is not in Q!"
         assert f.issubset(q), "F is not a subset of Q!"
 
+    def __str__(self) -> str:
+        msg = "M\n"
+        msg += "Q: {}\n".format(", ".join(sorted(list(self.q))))
+        msg += "Sigma: " + ", ".join(sorted(list(self.sigma))) + "\n"
+        msg += "Delta:\n"
+        for t in self.delta:
+            msg += "  delta({}, {}) = {}\n".format(*t, self.delta[t]) 
+        msg += "q0: {}\n".format(self.q0)
+        msg += "F: {}\n".format(", ".join(sorted(list(self.f))))
+
+        return msg
+
     def _delta(self, q: str, w: str) -> set:
 
         if w == "":
@@ -27,5 +39,5 @@ class DeterministicFiniteAutomaton:
             result = self._delta(self.q0, w)
         except KeyError:
             result = set()
-        print("delta({}, {}): {}".format(self.q0, w, result))
+        print("delta({}, {}): {}".format(self.q0, w if w else '""', result))
         return result in self.f
