@@ -85,6 +85,8 @@ else:
     while True:
 
         word = input("Enter a word: ")
+        if "," in word:
+            word = [i.strip() for i in word.split(",")]
         print("Word accepted:", automaton.accepts(word))
 
         # Aesthetic spacing, ask to continue/exit

@@ -27,14 +27,14 @@ class DeterministicFiniteAutomaton:
 
         return msg
 
-    def _delta(self, q: str, w: str) -> set:
+    def _delta(self, q: str, w: str or list) -> set:
 
-        if w == "":
+        if len(w) == 0:
             return q
         else:
             return self.delta[(self._delta(q, w[:-1]), w[-1])]
     
-    def accepts(self, w: str):
+    def accepts(self, w: str or list):
         try:
             result = self._delta(self.q0, w)
         except KeyError:
